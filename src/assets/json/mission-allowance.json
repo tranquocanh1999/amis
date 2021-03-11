@@ -1,0 +1,216 @@
+{
+    "menu": [{
+            "id": 1,
+            "name": "Người đề nghị",
+            "class": "proposer",
+            "isShow": true,
+            "isFixed": false
+        },
+        {
+            "id": 2,
+            "name": "Ngày đề nghị",
+            "class": "recommendedDate",
+            "isShow": true,
+            "isFixed": false
+        },
+        {
+            "id": 3,
+            "name": "Ngày đi",
+            "class": "departureDay",
+            "isShow": true,
+            "isFixed": false
+        },
+        {
+            "id": 4,
+            "name": "Ngày về",
+            "class": "dateBack",
+            "isShow": true,
+            "isFixed": false
+        },
+        {
+            "id": 5,
+            "name": "Địa điểm công tác",
+            "class": "workplace",
+            "isShow": true,
+            "isFixed": false
+        },
+        {
+            "id": 6,
+            "name": "Lí do công tác",
+            "class": "reasonForWork",
+            "isShow": true,
+            "isFixed": false
+        },
+        {
+            "id": 7,
+            "name": "Người duyệt",
+            "class": "acceptedBy",
+            "isShow": true,
+            "isFixed": false
+        },
+        {
+            "id": 8,
+            "name": "Trạng thái",
+            "class": "statusID",
+            "isShow": true,
+            "isFixed": false
+        }
+    ],
+    "data": [{
+            "id": 1,
+            "proposer": 2,
+            "recommendedDate": "16/04/2020 00:00",
+            "departureDay": "16/06/2020 00:00",
+            "dateBack": "16/08/2020 00:00",
+            "workplace": "Hà Nội",
+            "reasonForWork": " Du lịch",
+            "acceptedBy": 1,
+            "statusID": 1
+        },
+        {
+            "id": 3,
+            "proposer": 3,
+            "recommendedDate": "16/04/2020 00:00",
+            "departureDay": "16/06/2020 00:00",
+            "dateBack": "16/08/2020 00:00",
+            "workplace": "Hà Nội",
+            "reasonForWork": " Du lịch",
+            "acceptedBy": 1,
+            "statusID": 2
+        },
+        {
+            "id": 4,
+            "proposer": 4,
+            "recommendedDate": "16/04/2020 00:00",
+            "departureDay": "16/06/2020 00:00",
+            "dateBack": "16/08/2020 00:00",
+            "workplace": "Hà Nội",
+            "reasonForWork": " Du lịch",
+            "acceptedBy": 1,
+            "statusID": 2
+        },
+        {
+            "id": 5,
+            "proposer": 4,
+            "recommendedDate": "16/04/2020 00:00",
+            "departureDay": "16/06/2020 00:00",
+            "dateBack": "16/08/2020 00:00",
+            "workplace": "Hà Nội",
+            "reasonForWork": " Du lịch",
+            "acceptedBy": 2,
+            "statusID": 2
+        },
+        {
+            "id": 6,
+            "proposer": 2,
+            "recommendedDate": "16/04/2020 00:00",
+            "departureDay": "16/06/2020 00:00",
+            "dateBack": "16/08/2020 00:00",
+            "workplace": "Hà Nội",
+            "reasonForWork": " Du lịch",
+            "acceptedBy": 3,
+            "statusID": 1
+        },
+        {
+            "id": 7,
+            "proposer": 1,
+            "recommendedDate": "16/04/2020 00:00",
+            "departureDay": "16/06/2020 00:00",
+            "dateBack": "16/08/2020 00:00",
+            "workplace": "Hà Nội",
+            "reasonForWork": " Du lịch",
+            "acceptedBy": 3,
+            "statusID": 2
+        },
+        {
+            "id": 8,
+            "proposer": 1,
+            "recommendedDate": "16/04/2020 00:00",
+            "departureDay": "16/06/2020 00:00",
+            "dateBack": "16/08/2020 00:00",
+            "workplace": "Hà Nội",
+            "reasonForWork": " Du lịch",
+            "acceptedBy": 4,
+            "statusID": 1
+        },
+        {
+            "id": 9,
+            "proposer": 1,
+            "recommendedDate": "16/04/2020 00:00",
+            "departureDay": "16/06/2020 00:00",
+            "dateBack": "16/08/2020 00:00",
+            "workplace": "Hà Nội",
+            "reasonForWork": " Du lịch",
+            "acceptedBy": 2,
+            "statusID": 1
+        },
+        {
+            "id": 10,
+            "proposer": 1,
+            "recommendedDate": "16/04/2020 00:00",
+            "departureDay": "16/06/2020 00:00",
+            "dateBack": "16/08/2020 00:00",
+            "workplace": "Hà Nội",
+            "reasonForWork": " Du lịch",
+            "acceptedBy": 2,
+            "statusID": 2
+        },
+        {
+            "id": 11,
+            "proposer": 1,
+            "recommendedDate": "16/04/2020 00:00",
+            "departureDay": "16/06/2020 00:00",
+            "dateBack": "16/08/2020 00:00",
+            "workplace": "Hà Nội",
+            "reasonForWork": " Du lịch",
+            "acceptedBy": 3,
+            "statusID": 1
+        },
+        {
+            "id": 12,
+            "proposer": 1,
+            "recommendedDate": "16/04/2020 00:00",
+            "departureDay": "16/06/2020 00:00",
+            "dateBack": "16/08/2020 00:00",
+            "workplace": "Hà Nội",
+            "reasonForWork": " Du lịch",
+            "acceptedBy": 4,
+            "statusID": 1
+        },
+        {
+            "id": 13,
+            "proposer": 2,
+            "recommendedDate": "16/04/2020 00:00",
+            "departureDay": "16/06/2020 00:00",
+            "dateBack": "16/08/2020 00:00",
+            "workplace": "Hà Nội",
+            "reasonForWork": " Du lịch",
+            "acceptedBy": 1,
+            "statusID": 2
+        },
+        {
+            "id": 14,
+            "proposer": 2,
+            "recommendedDate": "16/04/2020 00:00",
+            "departureDay": "16/06/2020 00:00",
+            "dateBack": "16/08/2020 00:00",
+            "workplace": "Hà Nội",
+            "reasonForWork": " Du lịch",
+            "acceptedBy": 3,
+            "statusID": 1
+        }
+    ],
+    "status": [{
+            "id": 1,
+            "name": "Chưa duyệt"
+        },
+        {
+            "id": 2,
+            "name": "Đã duyệt"
+        },
+        {
+            "id": 3,
+            "name": "Từ chối"
+        }
+    ]
+}
