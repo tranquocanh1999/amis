@@ -28,7 +28,7 @@
             searchParam.toLowerCase()
           )
         "
-        
+        :payload.sync="payload"
       ></ms-filter-item>
     </div>
     <div class="event">
@@ -39,9 +39,10 @@
           marginLeft: '20px',
           marginRight: '20px',
         }"
+        @onClick="onHandleClick"
       ></ms-button>
      
-      <ms-button class="ms-button-primary" text="Áp dụng"></ms-button>
+      <ms-button class="ms-button-primary" @onClick="onSubmit" text="Áp dụng"></ms-button>
     </div>
   </div>
 </template>
@@ -58,6 +59,11 @@ export default {
       type: Object,
       default: null,
     },
+     payload: {
+      type: Object,
+      default: null,
+    },
+
   },
   data() {
     return { searchParam: "" };
@@ -66,6 +72,11 @@ export default {
     onHandleClick() {
       this.$emit("update:isFilter", false);
     },
+    onSubmit(){
+ this.payload
+       this.$emit("onSubmit", this.payload);
+    }
+    ,
      removeAccents(str) {
       var AccentsMap = [
         "aàảãáạăằẳẵắặâầẩẫấậ",

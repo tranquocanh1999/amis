@@ -10,9 +10,12 @@
     "postinstall": "npm run build-themes"
   },
   "dependencies": {
+    "@riversun/simple-date-format": "^1.1.5",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "devextreme": "^20.2.4",
     "devextreme-vue": "^20.2.4",
+    "moment": "^2.29.1",
     "node-sass": "^4.11.0",
     "vue": "^2.6.11",
     "vue-router": "^3.0.1",

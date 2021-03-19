@@ -21,7 +21,7 @@
     border: 1px solid var( --input-normal-border-color)
 }
 
-.dx-state-disabled .dx-texteditor-container {
+.dx-state-readonly .dx-texteditor-container {
     background-color: var(--input-disable-bg-color);
     border: 1px solid var( --input-disable-border-color)
 }
@@ -36,7 +36,7 @@
 }
 
 .mission-allowance-detail .detail-content .detail-form .dx-field-label {
-    font-size: 16px;
+    font-size: 14px;
     color: rgb(77, 77, 77)
 }
 
@@ -185,6 +185,15 @@
 .mission-allowance-detail .dx-texteditor-container:focus {
     border: 1px solid #ec5504;
     outline: 0;
+}
+
+.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-state-active {
+    border-radius: 4px;
+    outline: 0;
+}
+
+.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-list-item-selected.dx-state-hove:not(.dx-state-focused) {
+    border-radius: 4px;
 }
 
 .mission-allowance-detail .detail-content .detail-form .dx-texteditor-container:focus {
@@ -378,4 +387,27 @@ element.style {
 
 .dx-texteditor-container {
     overflow: auto;
+}
+
+.dx-dropdownlist-popup-wrapper .dx-empty-message:last-of-type {
+    border-bottom: none;
+    color: #ec5504;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.dx-texteditor.dx-editor-underlined .dx-placeholder::before,
+.dx-texteditor.dx-editor-underlined .dx-texteditor-input {
+    padding: 7px 0 6px;
+    font-size: 14px;
+}
+
+.dx-list .dx-list-item-selected.dx-list-item .dx-list-item-content {
+    font-size: 14px;
+}
+
+.dx-dropdownlist-popup-wrapper .dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item-content {
+    padding: 14px 15px;
+    font-size: 14px;
 }

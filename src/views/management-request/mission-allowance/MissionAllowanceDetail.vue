@@ -7,7 +7,7 @@
         </div>
         - Công tác
       </div>
-      <div class="detail-icon-cancel" @click="onClosePopup"></div>
+      <div class="detail-icon-cancel" @click="onClose"></div>
     </div>
     <div class="detail-content">
       <div class="detail-form">
@@ -19,23 +19,32 @@
             required
           >
             <DxSelectBox
-              :value.sync="defaultApplication.proposer"
+              :value.sync="defaultApplication.proposerID"
               placeholder=""
               :search-enabled="true"
+              :noDataText="noDataText"
               :data-source="employees.data"
               searchModeOption="contains"
               searchExprOption="Name"
               searchTimeoutOption="200"
               minSearchLengthOption="0"
+              :onSelectionChanged="onChangeProposer"
               :show-data-before-search="true"
-              display-expr="name"
-              value-expr="id"
+              display-expr="fullName"
+              value-expr="employeeID"
               ref="autoFocus"
             >
             </DxSelectBox>
           </ms-field>
           <ms-field label="Đơn vị công tác">
-            <DxTextBox :disabled="true" value=" " />
+            <DxSelectBox
+              :items="departments"
+              :value="defaultApplication.departmentID"
+              placeholder=""
+              display-expr="name"
+              value-expr="id"
+              :read-only="true"
+            />
           </ms-field>
           <ms-field
             label="Người duyệt"
@@ -44,8 +53,9 @@
             required
           >
             <DxSelectBox
-              :value.sync="defaultApplication.acceptedBy"
+              :value.sync="defaultApplication.censorID"
               placeholder=""
+              :noDataText="noDataText"
               :search-enabled="true"
               :data-source="employees.data"
               searchModeOption="contains"
@@ -53,8 +63,8 @@
               searchTimeoutOption="200"
               minSearchLengthOption="0"
               :show-data-before-search="true"
-              display-expr="name"
-              value-expr="id"
+              display-expr="fullName"
+              value-expr="employeeID"
             />
           </ms-field>
           <ms-field
@@ -88,46 +98,52 @@
             ></ms-date-picker>
           </ms-field>
           <ms-field label="Địa điểm công tác">
-            <DxTextBox value="" />
+            <DxTextBox :value.sync="defaultApplication.place" />
           </ms-field>
           <ms-field label="Lí do công tác">
-            <DxTextArea :height="90" />
+            <DxTextArea :height="90" :value.sync="defaultApplication.reason" />
           </ms-field>
         </div>
         <div class="right">
           <ms-field label="Người liên quan">
             <DxTagBox
               :items="employees"
+              :value.sync="defaultApplication.peopleInvolIds"
               :search-enabled="true"
+              :noDataText="noDataText"
               :height="90"
               placeholder=""
-              display-expr="name"
-              value-expr="id"
+              display-expr="fullName"
+              value-expr="employeeID"
             />
           </ms-field>
           <ms-field label="Yêu cầu hỗ trợ">
-            <DxTextArea :height="90" />
+            <DxTextArea
+              :height="90"
+              :value.sync="defaultApplication.requestSupport"
+            />
           </ms-field>
           <ms-field label="Người hỗ trợ">
             <DxTagBox
               :items="employees"
               :search-enabled="true"
+              :noDataText="noDataText"
               :height="90"
+              :value.sync="defaultApplication.peopleSupportIds"
               placeholder=""
-              display-expr="name"
-              value-expr="id"
-              :scroll-by-thumb="true"
+              display-expr="fullName"
+              value-expr="employeeID"
             />
           </ms-field>
           <ms-field label="Ghi chú">
-            <DxTextArea :height="90" />
+            <DxTextArea :height="90" :value.sync="defaultApplication.note" />
           </ms-field>
           <ms-field label="Trạng thái" required>
             <DxSelectBox
-              :value.sync="defaultApplication.statusID"
+              :value.sync="defaultApplication.status"
               placeholder=""
               :search-enabled="true"
-              :data-source="missionAllowance.status"
+              :data-source="status"
               searchModeOption="contains"
               searchExprOption="Name"
               searchTimeoutOption="200"
@@ -181,12 +197,40 @@
         ></ms-button>
       </div>
     </div>
+    <ms-popup
+      text="Thông tin đã được thay đổi. Bạn có muốn lưu lại không?"
+      title="Thông báo"
+      :popupVisible="confirmPopup"
+    >
+      <ms-button
+        class="ms-button-secondary"
+        @onClick="
+          () => {
+            confirmPopup = false;
+          }
+        "
+        text="Hủy"
+      >
+      </ms-button>
+      <ms-button
+        class="ms-button-secondary"
+        :buttonStyle="{ margin: '0 8px' }"
+        text="Không lưu"
+        @onClick="onClosePopup"
+      >
+      </ms-button>
+      <ms-button @onClick="onSubmit" class="ms-button-primary" text="Lưu">
+      </ms-button>
+    </ms-popup>
   </div>
 </template>
 
 <script>
-import missionAllowance from "@/assets/json/mission-allowance.json";
-import employees from "../../../assets/json/employee.json";
+import employeeAPI from "@/api/components/Employee/EmployeeAPI.js";
+import applicationApi from "@/api/components/Application/ApplicationAPI.js";
+
+import department from "@/assets/json/department.json";
+import notify from "devextreme/ui/notify";
 
 export default {
   name: "mission-allowance-detail",
@@ -195,26 +239,46 @@ export default {
       type: Function,
       default: () => {},
     },
-    missionAllowanceId: { type: Number, default: 0 },
+    applicationID: { type: Number, default: 0 },
   },
   data() {
     return {
+      confirmPopup: false,
+      isChange: true,
       title: "Thêm đơn",
-      missionAllowance: missionAllowance,
-      employees: employees,
+      noDataText: "Không có dữ liệu!",
+
+      employees: [],
       defaultApplication: {
-        id: 15,
-        proposer: "",
+        id: "",
+        proposerID: "",
         recommendedDate: this.getDateNow(),
         departureDay: "",
         dateBack: "",
-        workplace: "",
-        reasonForWork: "",
-        acceptedBy: "",
-        statusID: 1,
-        peopleInvolved:""
+        place: "",
+        reason: "",
+        censorID: "",
+        status: 1,
+        departmentID: "",
+        peopleInvolIds: "",
+        peopleSupportIds: "",
+        note:"",
       },
-
+      status: [
+        {
+          id: 1,
+          name: "Chờ duyệt",
+        },
+        {
+          id: 2,
+          name: "Đã duyệt",
+        },
+        {
+          id: 3,
+          name: "Từ chối",
+        },
+      ],
+      departments: department.department,
       messageErr: {
         proposer: "",
         acceptedBy: "",
@@ -225,82 +289,128 @@ export default {
     };
   },
   methods: {
-    setMissionAllowanceId(id) {
-      var result = this.missionAllowance.data.find(
-        (element) => element.id == id
-      );
+    // hứng dữ liệu của người đề nghị
+    onChangeProposer(e) {
+      this.defaultApplication.departmentID = e.selectedItem.departmentID;
+    },
+    // đóng popup Confirm
+    onClose() {
+      if (this.isChange) this.confirmPopup = true;
+      else this.onClosePopup();
+    },
 
-      this.defaultApplication = JSON.parse(JSON.stringify(result));
+    // lấy dữ liệu theo id
+    async setApplication(id) {
+      this.defaultApplication = await applicationApi.getById(id);
+      this.defaultApplication = this.defaultApplication.data;
+        this.defaultApplication.peopleSupportIds=this.defaultApplication.peopleSupportIds.split(',');
+    this.defaultApplication.peopleInvolIds=this.defaultApplication.peopleInvolIds.split(',');
+     if(this.defaultApplication.peopleSupportIds[0]=="") this.defaultApplication.peopleSupportIds.pop();
+     if(this.defaultApplication.peopleSupportIds[0]=="") this.defaultApplication.peopleSupportIds.pop();
     },
-    onSave() {
-      console.log(this.defaultApplication);
+
+    // xử lí khi ấn đồng ý lưu
+    async onSubmit() {
+    this.defaultApplication.peopleSupportIds=this.defaultApplication.peopleSupportIds.toString();
+    this.defaultApplication.peopleInvolIds=this.defaultApplication.peopleInvolIds.toString();
+  
+      //validate dữ liệu
+      if (this.validate()) {
+        if (this.applicationID === 0) {
+          // gọi api thêm dữ liẹu
+          await applicationApi.insert(this.defaultApplication);
+          notify("Thêm thành công", "success", 1000);
+        } else {
+          //gọi api chỉnh sửa
+          await applicationApi.update(
+            this.applicationID,
+            this.defaultApplication
+          );
+          notify("Chỉnh sửa thành công", "success", 1000);
+        }
+        this.confirmPopup = false;
+        this.onClosePopup();
+        
+      } else notify("Có lỗi xảy ra!", "error", 1000);
     },
-    onSubmit() {
-      this.validate();
-    },
+
+    // validate dữ liệu
     validate() {
-     
+      var flag = true;
       this.messageErr.proposer = "";
       this.messageErr.acceptedBy = "";
       this.messageErr.recommendedDate = "";
       this.messageErr.departureDay = "";
       this.messageErr.dateBack = "";
-      if (this.defaultApplication.proposer === "")
+
+      // check người đề nghị có trốn không
+      if (this.defaultApplication.proposerID === "") {
+        flag = false;
         this.messageErr.proposer = "Người đề nghị không được để trống.";
-      if (this.defaultApplication.acceptedBy === "")
+      }
+      // check người duyệt có trống không
+      if (this.defaultApplication.censorID === "") {
+        flag = false;
         this.messageErr.acceptedBy = "Người duyệt không được để trống.";
-      if (this.defaultApplication.recommendedDate === "")
+      }
+      // check ngày đề nghị có trống không
+      if (this.defaultApplication.recommendedDate === "") {
+        flag = false;
         this.messageErr.recommendedDate = "Ngày đề nghị không được để trống.";
-      if (this.defaultApplication.departureDay === "")
+      }
+      //check ngày đi có trống không
+      if (this.defaultApplication.departureDay === "") {
+        flag = false;
         this.messageErr.departureDay = "Ngày đi không được để trống.";
-      if (this.defaultApplication.dateBack === "")
+      }
+      //check ngày về có trống không
+      if (this.defaultApplication.dateBack === "") {
+        flag = false;
         this.messageErr.dateBack = "Ngày về không được để trống.";
+      }
+      //check ngày đề nghị có lớn hơn ngày đi không
       if (
         this.dateCompare(
           this.defaultApplication.recommendedDate,
           this.defaultApplication.departureDay
         ) > 0
-      )
-        this.messageErr.departureDay = "Ngày đi không được nhỏ hơn ngày đề nghị.";
-        if (
+      ) {
+        flag = false;
+        this.messageErr.recommendedDate =
+          "Ngày đề nghị không được lớn hơn ngày đi .";
+        this.messageErr.departureDay =
+          "Ngày đi không được nhỏ hơn ngày đề nghị.";
+      } else if (
+        //check ngày về có nhỏ hơn ngày đi hay không
         this.dateCompare(
-          
           this.defaultApplication.departureDay,
           this.defaultApplication.dateBack
         ) > 0
-      )
+      ) {
+        flag = false;
         this.messageErr.dateBack = "Ngày về không được nhỏ hơn ngày đi.";
-      
-    },
-    getDateNow() {
-      var now = new Date();
-      var day = ("0" + now.getDate()).slice(-2);
-      var month = ("0" + (now.getMonth() + 1)).slice(-2);
-      var hour = ("0" + now.getHours()).slice(-2);
-      var minute = ("0" + now.getMinutes()).slice(-2);
-      var today =
-        day +
-        "/" +
-        month +
-        "/" +
-        +now.getFullYear() +
-        " " +
-        hour +
-        ":" +
-        minute;
-      return today;
+        this.messageErr.departureDay = "Ngày đi không được lớn hơn ngày về.";
+      }
+
+      return flag;
     },
 
+    // lấy ngày hiện tại
+    getDateNow() {
+      var now = new Date();
+
+      return now.toISOString();
+    },
+// so sánh 2 ngày
     dateCompare(a, b) {
-      var date1 = new Date(this.formatDate(a));
-      var date2 = new Date(this.formatDate(b));
+      var date1 = new Date(a);
+      var date2 = new Date(b);
 
       return date1 - date2;
     },
-    formatDate(a) {
-      return a.slice(3, 5) + "/" + a.slice(0, 2) + "/" + a.slice(6);
-    },
+    
   },
+
   mounted() {
     this.$nextTick(() => {
       this.$refs.autoFocus.instance.focus();
@@ -309,8 +419,13 @@ export default {
       }, 1000);
     });
 
-    if (this.missionAllowanceId !== 0) this.title = "Sửa đơn";
-    this.setMissionAllowanceId(this.missionAllowanceId);
+    if (this.applicationID !== 0) {
+      this.title = "Sửa đơn";
+      this.setApplication(this.applicationID);
+    }
+  },
+  async created() {
+    this.employees = await employeeAPI.getAll();
   },
 };
 </script>

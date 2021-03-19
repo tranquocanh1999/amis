@@ -17,7 +17,7 @@
       v-bind:value="checkValue"
       v-bind:style="{ backgroundImage: 'url(' + prefix + ')', styles }"
       v-on:keyup="onKeyup"
-      v-on:keydown="onKeydown"
+      @change="onChangeValue"
       v-bind:placeholder="placeholder"
       :readonly="readonly"
       :required="required"
@@ -109,20 +109,10 @@ export default {
         return this.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       } else return this.value;
     },
+   
   },
   methods: {
-   async onKeydown(e) {
-    
-      if (
-        !(
-          (e.keyCode > 95 && e.keyCode < 106) ||
-          (e.keyCode > 47 && e.keyCode < 58) ||
-          e.keyCode == 8|| e.keyCode == 9
-        )&&this.type === "currency"
-      ) {
-       e.preventDefault()
-      }
-    },
+  
     async onKeyup(e) {
           var x = e.target.value;
       if (this.type === "currency") {
@@ -133,6 +123,10 @@ export default {
       }
            this.onChange(x);
     },
+     onChangeValue(e){
+   
+    this.$emit("onChange",e.target.value)
+  }
   },
   created() {
     if (this.autofocus === true)
@@ -140,6 +134,7 @@ export default {
         this.$refs.autoFocus.focus();
       }, 0);
   },
+ 
 };
 </script>
 

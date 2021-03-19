@@ -1,12 +1,13 @@
 <template>
   <date-picker
-
     :value="datetime"
     :clearable="false"
     :show-time-header="true"
     :type="type"
-    valueType="format"
+    :default="null"
+    valueType="YYYY-MM-DDTHH:mm:ss"
     format="DD/MM/YYYY HH:mm"
+    :show-time-panel="showTimePanel"
     placeholder="DD/MM/YYYY HH:mm"
     id="date-of-application"
     @input="updateDatetime"
@@ -49,7 +50,6 @@ export default {
   },
   methods: {
     updateDatetime(e) {
-    
       this.$emit("update:datetime", e);
     },
   },

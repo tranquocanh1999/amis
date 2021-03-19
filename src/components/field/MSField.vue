@@ -19,7 +19,7 @@
         :visible="visible"
         :close-on-outside-click="false"
         :position="'top'"
-        :target="target"
+        :target="'#'.concat(targetID)"
       >
   <div class="messageErr"> {{messageErr}}</div> 
       </DxTooltip>
@@ -55,7 +55,7 @@ export default {
   data() {
     return {
       visible: false,
-      target: "#" + this.targetID,
+      
     };
   },
   methods: {

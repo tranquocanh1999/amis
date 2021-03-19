@@ -2,7 +2,7 @@
     "menu": [{
             "id": 1,
             "name": "Người đề nghị",
-            "class": "proposer",
+            "class": "proposerName",
             "isShow": true,
             "isFixed": false
         },
@@ -30,28 +30,28 @@
         {
             "id": 5,
             "name": "Địa điểm công tác",
-            "class": "workplace",
+            "class": "place",
             "isShow": true,
             "isFixed": false
         },
         {
             "id": 6,
             "name": "Lí do công tác",
-            "class": "reasonForWork",
+            "class": "reason",
             "isShow": true,
             "isFixed": false
         },
         {
             "id": 7,
             "name": "Người duyệt",
-            "class": "acceptedBy",
+            "class": "censorName",
             "isShow": true,
             "isFixed": false
         },
         {
             "id": 8,
             "name": "Trạng thái",
-            "class": "statusID",
+            "class": "status",
             "isShow": true,
             "isFixed": false
         }
@@ -64,7 +64,7 @@
             "dateBack": "16/08/2020 00:00",
             "workplace": "Hà Nội",
             "reasonForWork": " Du lịch",
-            "acceptedBy": 1,
+            "CensorId": 1,
             "statusID": 1
         },
         {
@@ -75,7 +75,7 @@
             "dateBack": "16/08/2020 00:00",
             "workplace": "Hà Nội",
             "reasonForWork": " Du lịch",
-            "acceptedBy": 1,
+            "CensorId": 1,
             "statusID": 2
         },
         {
@@ -86,7 +86,7 @@
             "dateBack": "16/08/2020 00:00",
             "workplace": "Hà Nội",
             "reasonForWork": " Du lịch",
-            "acceptedBy": 1,
+            "CensorId": 1,
             "statusID": 2
         },
         {
@@ -97,7 +97,7 @@
             "dateBack": "16/08/2020 00:00",
             "workplace": "Hà Nội",
             "reasonForWork": " Du lịch",
-            "acceptedBy": 2,
+            "CensorId": 2,
             "statusID": 2
         },
         {
@@ -108,7 +108,7 @@
             "dateBack": "16/08/2020 00:00",
             "workplace": "Hà Nội",
             "reasonForWork": " Du lịch",
-            "acceptedBy": 3,
+            "CensorId": 3,
             "statusID": 1
         },
         {
@@ -119,7 +119,7 @@
             "dateBack": "16/08/2020 00:00",
             "workplace": "Hà Nội",
             "reasonForWork": " Du lịch",
-            "acceptedBy": 3,
+            "CensorId": 3,
             "statusID": 2
         },
         {
@@ -130,7 +130,7 @@
             "dateBack": "16/08/2020 00:00",
             "workplace": "Hà Nội",
             "reasonForWork": " Du lịch",
-            "acceptedBy": 4,
+            "CensorId": 4,
             "statusID": 1
         },
         {
@@ -141,7 +141,7 @@
             "dateBack": "16/08/2020 00:00",
             "workplace": "Hà Nội",
             "reasonForWork": " Du lịch",
-            "acceptedBy": 2,
+            "CensorId": 2,
             "statusID": 1
         },
         {
@@ -152,7 +152,7 @@
             "dateBack": "16/08/2020 00:00",
             "workplace": "Hà Nội",
             "reasonForWork": " Du lịch",
-            "acceptedBy": 2,
+            "CensorId": 2,
             "statusID": 2
         },
         {
@@ -163,7 +163,7 @@
             "dateBack": "16/08/2020 00:00",
             "workplace": "Hà Nội",
             "reasonForWork": " Du lịch",
-            "acceptedBy": 3,
+            "CensorId": 3,
             "statusID": 1
         },
         {
@@ -174,7 +174,7 @@
             "dateBack": "16/08/2020 00:00",
             "workplace": "Hà Nội",
             "reasonForWork": " Du lịch",
-            "acceptedBy": 4,
+            "CensorId": 4,
             "statusID": 1
         },
         {
@@ -185,7 +185,7 @@
             "dateBack": "16/08/2020 00:00",
             "workplace": "Hà Nội",
             "reasonForWork": " Du lịch",
-            "acceptedBy": 1,
+            "CensorId": 1,
             "statusID": 2
         },
         {
@@ -196,21 +196,10 @@
             "dateBack": "16/08/2020 00:00",
             "workplace": "Hà Nội",
             "reasonForWork": " Du lịch",
-            "acceptedBy": 3,
+            "CensorId": 3,
             "statusID": 1
         }
-    ],
-    "status": [{
-            "id": 1,
-            "name": "Chưa duyệt"
-        },
-        {
-            "id": 2,
-            "name": "Đã duyệt"
-        },
-        {
-            "id": 3,
-            "name": "Từ chối"
-        }
     ]
+
+
 }

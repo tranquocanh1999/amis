@@ -8,6 +8,8 @@
 @import './component/input.css';
 @import './component/dx.css';
 @import './component/field.css';
+@import './component/popup.css';
+@import './component/toast.css';
 @import './component/date-picker.css';
 @import './views/management-request/mission-allowance/missionAllowanceView.css';
 @import './views/management-request/mission-allowance/missionAllowanceDetail.css';

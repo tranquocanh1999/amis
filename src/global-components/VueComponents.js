@@ -26,3 +26,5 @@ import MSDatePicker from '@/components/date-picker/MSDatePicker';
 Vue.component(MSDatePicker.name, MSDatePicker)
 import MSField from '@/components/field/MSField';
 Vue.component(MSField.name, MSField)
+import MSPopup from '@/components/popup/MSPopup';
+Vue.component(MSPopup.name, MSPopup)

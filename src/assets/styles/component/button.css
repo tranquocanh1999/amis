@@ -102,6 +102,7 @@ button {
 .ms-button-secondary:focus {
     background-color: #eff1f6;
     border: 1px solid #dadce3;
+    outline: 0
 }
 
 .noText:hover {
@@ -188,4 +189,26 @@ button {
     background-color: #fff;
     color: #171b2a;
     border: 1px solid #dadce3;
+}
+
+.ms-button-primary-danger {
+    color: var( --button-primary-color);
+    background-color: #EF292F;
+    border: 1px solid #EF292F;
+}
+
+.ms-button-primary-danger:hover {
+    background-color: #ed1219;
+    border: 1px solid #ef292f;
+}
+
+.ms-button-primary-danger:active {
+    background-color: #d51017;
+    border: 1px solid #ef292f;
+}
+
+.ms-button-primary-danger:focus {
+    background-color: #ed1219;
+    border: 1px solid #ef292f;
+    outline: 0
 }

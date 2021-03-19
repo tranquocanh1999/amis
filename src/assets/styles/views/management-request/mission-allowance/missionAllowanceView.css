@@ -6,7 +6,9 @@
         height: 48px;
         display: flex;
         align-items: center;
-        margin: -10px 0 10px 0
+        margin: -10px 0 10px 0;
+        position: relative;
+        top: 0;
     }
     
     .content-header .content-header-title {
@@ -45,9 +47,10 @@
     }
     
     .content-header .content-header-right {
+        position: absolute;
+        right: 0;
         display: flex;
         align-items: center;
-        margin-left: 45%;
     }
     
     .content-header .content-header-right .search {

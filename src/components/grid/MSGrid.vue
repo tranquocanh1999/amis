@@ -4,16 +4,16 @@
       <DxDataGrid
         id="gridContainer"
         noDataText="Không có dữ liệu"
-        :data-source="data.data"
+        :data-source="tbody"
         :show-borders="true"
         :allow-column-reordering="true"
         ref="dataGrid"
         @content-ready="handleContentReady"
         @selection-changed="onSelectionChanged"
-        key-expr="id"
+        :key-expr="id"
         :hoverStateEnabled="true"
       >
-        <DxScrolling :useNative="true"></DxScrolling>
+        <DxPaging :enabled="false"></DxPaging>
         <DxColumn
           data-field=""
           caption=""
@@ -39,23 +39,19 @@
           header-cell-template="title-header"
           :fixed="item.isFixed"
           fixed-position="left"
+          :dataType="item.class === 'status' ? '' : 'date'"
+          format="dd/MM/yyyy HH:mm"
         >
           <DxLookup
             :data-source="status"
             value-expr="id"
             display-expr="name"
-            v-if="item.class === 'statusID'"
-          />
-          <DxLookup
-            :data-source="employees.data"
-            value-expr="id"
-            display-expr="name"
-            v-if="item.class === 'proposer' || item.class === 'acceptedBy'"
+            v-if="item.class === 'status'"
           />
         </DxColumn>
 
         <DxColumn
-          data-field="id"
+          :data-field="id"
           :width="120"
           caption=""
           cell-template="event"
@@ -97,7 +93,6 @@
                   :data-source="listHeader"
                   :show-borders="true"
                   :selected-row-keys.sync="rowsActive"
-              
                   @content-ready="handleContentReady2"
                   key-expr="id"
                 >
@@ -126,11 +121,7 @@
                   <template #drag-icon>
                     <div class="dx-datagrid-drag-icon"></div>
                   </template>
-                  <template
-                    #name="{data}"
-                  
-                    >{{ data.value }}</template
-                  >
+                  <template #name="{data}" ``>{{ data.value }}</template>
                 </DxDataGrid>
                 <div class="event">
                   <ms-button
@@ -189,71 +180,104 @@
     </div>
     <div class="paging w-full">
       <div class="page-total" id="test">
-        Tổng số bản ghi: <b>{{ totalItem }}</b>
+        Tổng số bản ghi: <b>{{ totalElements }}</b>
       </div>
-
-      <div class="page-select-box">
-        <div class="center-text checked-text">
-          <DxSelectBox
-            :items="page"
-            :value.sync="numberElementsOfPage"
-            item-template="customItem"
-          >
-            <template #customItem="{ data }">
-              <div class="page-custom-item">
-                <div class="page-name">
-                  {{ data }}
+      <diV class="page-left">
+        <div class="page-select-box">
+          <div class="center-text checked-text">
+            <DxSelectBox
+              :items="page"
+              :value.sync="numberElementsOfPage"
+              item-template="customItem"
+              :onValueChanged="onChangePageSize"
+            >
+              <template #customItem="{ data }">
+                <div class="page-custom-item">
+                  <div class="page-name">
+                    {{ data }}
+                  </div>
+                  <div
+                    class="page-selected"
+                    v-if="data === numberElementsOfPage"
+                  ></div>
                 </div>
-                <div
-                  class="page-selected"
-                  v-if="data === numberElementsOfPage"
-                ></div>
-              </div>
-            </template>
-          </DxSelectBox>
+              </template>
+            </DxSelectBox>
+          </div>
         </div>
-      </div>
-      <div class="page-infor">
-        từ <b>1</b> đến <b>{{ totalItem }}</b> bản ghi
-      </div>
-      <div class="page-paging">
-        <div class="btn-prev"></div>
-        <div class="btn-next"></div>
-      </div>
+        <div class="page-infor">
+          từ <b>{{ elementFrom }}</b> đến <b>{{ elementTo }}</b> bản ghi
+        </div>
+        <div class="page-paging">
+          <div
+            class="btn-prev "
+            @click="prevClick"
+            :class="{ disable: pageNumber < 2 }"
+          ></div>
+          <div
+            @click="nextClick"
+            :class="{
+              disable:
+                Math.ceil(totalElements / numberElementsOfPage) <= pageNumber,
+            }"
+            class="btn-next"
+          ></div>
+        </div>
+      </diV>
     </div>
   </div>
 </template>
 
 <script>
+import status from "@/assets/json/status.json";
 import employees from "../../assets/json/employee.json";
 export default {
   name: "ms-grid",
   props: {
+    id: {
+      type: String,
+      default: "",
+    },
     data: {
       type: Object,
+      default: null,
+    },
+    tbody: {
+      type: [Object, Array],
       default: null,
     },
     deleteMode: {
       type: Boolean,
       default: false,
     },
+    pageNumber: {
+      type: Number,
+      default: 1,
+    },
+    totalElements: {
+      type: Number,
+      default: 1,
+    },
   },
   data() {
     return {
       prefix: "",
       selectedEmployeeNames: "Nobody has been selected",
-      numberElementsOfPage: 50,
+      numberElementsOfPage: 25,
       selectionChangedBySelectBox: false,
       gridHeader: { ...this.data.menu },
       listHeader: JSON.parse(JSON.stringify(this.data.menu)),
       headerDefault: JSON.parse(JSON.stringify(this.data.menu)),
-      status: this.data.status,
+      status: status.status.splice(1, 3),
       defaultVisible: false,
       rowsActive: [],
-      totalItem: this.countItem(this.data.data),
+      elementFrom: 0,
+      elementTo: 0,
+
       page: [15, 25, 50, 100],
       employees: employees,
       searchParam: "",
+      totalItem: this.tbody.length,
     };
   },
   methods: {
@@ -304,15 +328,35 @@ export default {
     toggleDefault() {
       this.defaultVisible = !this.defaultVisible;
     },
-    countItem(e) {
-      return Object.keys(e).length;
+    countInfor() {
+      this.elementFrom = (this.pageNumber - 1) * this.numberElementsOfPage + 1;
+      this.elementTo = this.elementFrom + this.totalItem - 1;
     },
 
-  
     onSelectionChanged({ selectedRowKeys }) {
       this.$emit("onSelectionChanged", selectedRowKeys);
     },
-   
+    async onChangePageSize() {
+      await this.$emit("onChangePageSize", this.numberElementsOfPage);
+    },
+
+    prevClick() {
+      if (this.pageNumber >= 2) this.pageNumber = this.pageNumber - 1;
+      this.onChangePageNumber();
+    },
+    nextClick() {
+      if (
+        Math.ceil(this.totalElements / this.numberElementsOfPage) >
+        this.pageNumber
+      ) {
+        this.pageNumber = this.pageNumber + 1;
+        this.onChangePageNumber();
+      }
+    },
+    onChangePageNumber() {
+      this.$emit("onChangePageNumber", this.pageNumber);
+    },
+
     async onChangeHeader() {
       await this.data.menu.forEach((element) => {
         if (this.rowsActive.find((e) => e === element.id) === undefined)
@@ -353,9 +397,15 @@ export default {
         dataGrid.clearSelection();
       }
     },
+    tbody: function(newVal, oldVal) {
+      console.log("Prop changed: ", newVal, " | was: ", oldVal);
+      this.totalItem = this.tbody.length;
+      this.countInfor();
+    },
   },
   created() {
     this.handleRowsActive();
+    this.countInfor();
   },
 };
 </script>
